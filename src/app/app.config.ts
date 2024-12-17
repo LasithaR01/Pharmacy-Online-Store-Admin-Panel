@@ -1,36 +1,23 @@
-import { ApplicationConfig, importProvidersFrom } from '@angular/core';
-import { provideAnimations } from '@angular/platform-browser/animations';
-import {
-  provideRouter,
-  withEnabledBlockingInitialNavigation,
-  withHashLocation,
-  withInMemoryScrolling,
-  withRouterConfig,
-  withViewTransitions
-} from '@angular/router';
-
-import { DropdownModule, SidebarModule } from '@coreui/angular';
-import { IconSetService } from '@coreui/icons-angular';
-import { routes } from './app.routes';
-import { provideHttpClient } from '@angular/common/http';
+import { ApplicationConfig } from '@angular/core';
+import { provideRouter } from '@angular/router';
+import { provideAnimationsAsync } from '@angular/platform-browser/animations/async';
+import { providePrimeNG } from 'primeng/config';
+import Aura from '@primeng/themes/aura';
+import { routes } from './app-routing.module';
+import { HttpClient, provideHttpClient } from '@angular/common/http';
+import { CommonModule } from '@angular/common';
 
 export const appConfig: ApplicationConfig = {
   providers: [
     provideHttpClient(),
-    provideRouter(routes,
-      withRouterConfig({
-        onSameUrlNavigation: 'reload'
-      }),
-      withInMemoryScrolling({
-        scrollPositionRestoration: 'top',
-        anchorScrolling: 'enabled'
-      }),
-      withEnabledBlockingInitialNavigation(),
-      withViewTransitions(),
-      withHashLocation()
-    ),
-    importProvidersFrom(SidebarModule, DropdownModule),
-    IconSetService,
-    provideAnimations()
-  ]
+    provideAnimationsAsync(),
+    providePrimeNG({
+      theme: {
+        preset: Aura,
+      },
+    }),
+    provideRouter(routes),
+    CommonModule,
+    HttpClient,
+  ],
 };
